@@ -5,17 +5,17 @@
 	"main": "server.js",
 	"type": "module",
 	"scripts": {
-    "build-client": "cd client && npm run build",
-    "server": "nodemon server --ignore client",
-    "client": "npm start --prefix client",
-    "start": "concurrently --kill-others-on-fail \" npm run server\" \" npm run client\""
+		"build-client": "cd client && npm run build",
+		"server": "nodemon server --ignore client",
+		"client": "npm start --prefix client",
+		"start": "concurrently --kill-others-on-fail \" npm run server\" \" npm run client\""
 	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
 	"devDependencies": {
 		"concurrently": "^7.2.2",
-    "nodemon": "^2.0.16"
+		"nodemon": "^2.0.16"
 	},
 	"dependencies": {
 		"bcryptjs": "^2.4.3",
