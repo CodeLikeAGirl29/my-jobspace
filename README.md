@@ -4,7 +4,7 @@
 
 Project in Action - [Jobspace](https://my-jobspace.herokuapp.com/)
 
-![screenshot](https://res.cloudinary.com/codelikeagirl29/image/upload/v1662720108/Jobscape_nrvzkg.png)
+![screenshot](https://res.cloudinary.com/codelikeagirl29/image/upload/v1662720108/projects/Jobscape_nrvzkg.png)
 
 #### Run The App Locally
 
