@@ -1,6 +1,4 @@
-import React, { useReducer, useContext } from 'react'
-
-import reducer from './reducer'
+import React, { createContext, useContext, useReducer } from "react";
 import axios from 'axios'
 import {
   DISPLAY_ALERT,
@@ -30,17 +28,18 @@ import {
   CLEAR_FILTERS,
   CHANGE_PAGE,
 } from './actions'
+import reducer from './reducer';
 
 const token = localStorage.getItem('token')
-const user = localStorage.getItem('user')
-const userLocation = localStorage.getItem('location')
+const user = JSON.parse(localStorage.getItem("user"));
+const userLocation = localStorage.getItem("location");
 
 const initialState = {
   isLoading: false,
   showAlert: false,
   alertText: '',
   alertType: '',
-  user: user ? JSON.parse(user) : null,
+  user: user ? user : null,
   token: token,
   userLocation: userLocation || '',
   showSidebar: false,
@@ -66,7 +65,7 @@ const initialState = {
   sortOptions: ['latest', 'oldest', 'a-z', 'z-a'],
 }
 
-const AppContext = React.createContext()
+const AppContext = createContext();
 
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState)
@@ -80,27 +79,29 @@ const AppProvider = ({ children }) => {
   authFetch.interceptors.request.use(
     (config) => {
       config.headers.common['Authorization'] = `Bearer ${state.token}`
-      return config
+      return config;
     },
     (error) => {
       return Promise.reject(error)
     }
-  )
+  );
   // response
 
   authFetch.interceptors.response.use(
     (response) => {
-      return response
+      return response;
     },
     (error) => {
-      // console.log(error.response)
+      console.log(error.response);
+      // deal with 404(NOT_FOUND) error which means UNAUTHORIZED (no token)
       if (error.response.status === 401) {
-        logoutUser()
+        logoutUser();
       }
-      return Promise.reject(error)
+      return Promise.reject(error);
     }
   )
 
+  // dispatching actions
   const displayAlert = () => {
     dispatch({ type: DISPLAY_ALERT })
     clearAlert()
@@ -112,6 +113,7 @@ const AppProvider = ({ children }) => {
     }, 3000)
   }
 
+  // local storage
   const addUserToLocalStorage = ({ user, token, location }) => {
     localStorage.setItem('user', JSON.stringify(user))
     localStorage.setItem('token', token)
@@ -124,6 +126,7 @@ const AppProvider = ({ children }) => {
     localStorage.removeItem('location')
   }
 
+  // handling register logic from register page
   const setupUser = async ({ currentUser, endPoint, alertText }) => {
     dispatch({ type: SETUP_USER_BEGIN })
     try {
@@ -311,6 +314,7 @@ const AppProvider = ({ children }) => {
   )
 }
 
+// hook for importing state
 const useAppContext = () => {
   return useContext(AppContext)
 }
